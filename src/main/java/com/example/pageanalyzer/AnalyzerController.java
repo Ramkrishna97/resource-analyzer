@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api")
@@ -31,6 +32,33 @@ public class AnalyzerController {
     public SummaryResult url(@RequestBody Map<String,String> body) {
         try { return analyze(webpages.extract(body.get("url")), body.get("level"), body.get("engine"), body.get("model")); }
         catch (Exception ex) { throw error(ex); }
+    }
+    @PostMapping(value="/analyze/batch", consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<SummaryResult> batch(@RequestParam("manifest") String manifest,
+                                    @RequestParam Map<String, MultipartFile> files) {
+        try {
+            var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            var items = mapper.readTree(manifest);
+            if (!items.isArray() || items.isEmpty() || items.size() > 20)
+                throw new IllegalArgumentException("Add between 1 and 20 sources to combine.");
+            List<SummaryResult> results = new ArrayList<>();
+            for (var item : items) {
+                String type = item.path("type").asText();
+                String level = item.path("level").asText("MEDIUM");
+                String engine = item.path("engine").asText("offline");
+                String model = item.path("model").asText("");
+                ExtractedContent extracted;
+                if (type.equals("url")) extracted = webpages.extract(item.path("value").asText());
+                else {
+                    String key = item.path("key").asText();
+                    MultipartFile file = files.get(key);
+                    if (file == null) throw new IllegalArgumentException("A selected file is missing from the combined request.");
+                    extracted = documents.extract(file);
+                }
+                results.add(analyze(extracted, level, engine, model));
+            }
+            return results;
+        } catch (Exception ex) { throw error(ex); }
     }
     @GetMapping("/status")
     public Map<String,Object> status() {
