@@ -2,7 +2,12 @@
 setlocal
 cd /d "%~dp0"
 echo Starting Briefly document summarizer...
-start "Briefly" cmd /c "gradlew.bat bootRun"
+where gradle >nul 2>&1
+if errorlevel 1 (
+  start "Briefly" cmd /c "gradlew.bat bootRun"
+) else (
+  start "Briefly" cmd /c "gradle bootRun"
+)
 echo Waiting for the application to start...
 for /l %%i in (1,1,60) do (
   powershell -NoProfile -Command "try { $r = Invoke-WebRequest -UseBasicParsing http://localhost:8080 -TimeoutSec 1; if ($r.StatusCode -eq 200) { exit 0 } } catch {}; exit 1" >nul 2>&1
