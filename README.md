@@ -21,3 +21,5 @@ Uploaded files are read for the request and are not stored. URL analysis fetches
 ## Design
 
 `ContentExtractor<T>` separates source acquisition from the reusable `SummarizationService`. `DocumentExtractor` and `WebPageExtractor` implement independent parsing paths. `ExtractiveSummarizer` works without network access; `OllamaSummarizer` is an optional local-model adapter. `AnalyzerController` composes these services behind the browser-facing API.
+
+- Combine up to 20 files and URLs in one run. Each source can use its own detail level; results remain labeled individually and export together.
