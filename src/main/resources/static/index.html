@@ -5,14 +5,16 @@
   <meta name="theme-color" content="#f5f4f0"><title>Briefly — document intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
   <header class="topbar"><a href="#" class="brand"><span class="brand-mark">b.</span><span>briefly</span></a><div class="top-right"><span class="secure">PRIVATE BY DESIGN</span><span class="privacy-icon">◈</span></div></header>
   <main class="layout">
-    <section class="intro"><div class="eyebrow"><span class="sparkle">✳</span> YOUR PERSONAL RESEARCH ASSISTANT</div><h1>Less reading.<br><em>More knowing.</em></h1><p class="intro-copy">Turn long documents and web pages into clear, useful summaries. Your files stay on your device.</p></section>
+    <section class="intro"><div class="eyebrow"><span class="sparkle">✳</span> YOUR PERSONAL RESEARCH ASSISTANT</div><h1>Less reading.<br><em>More knowing.</em></h1><p class="intro-copy">Turn long documents and web pages into clear, useful summaries. Your files stay on your device.</p><div class="intro-note"><span>01</span><span>One clear summary at a time<br><b>Or combine multiple sources</b></span></div></section>
     <section class="workspace" aria-label="Summarize content">
       <div class="input-card"><div class="card-heading"><div><div class="step-label"><span class="step-number">01</span> ADD YOUR SOURCE</div><h2>What are we reading?</h2></div><span class="accepts">PDF · DOCX · XLSX</span></div>
+        <label class="combine-toggle"><input id="combineToggle" type="checkbox"><span class="toggle-track"></span><span><b>Combine multiple sources</b><small>Add files or URLs, set a detail level for each, then export a labeled collection.</small></span></label>
+        <div id="sourceList" class="source-list hidden"></div>
         <div class="tabs" role="tablist"><button class="tab active" data-tab="file" role="tab">↑ &nbsp;Upload a file</button><button class="tab" data-tab="url" role="tab">↗ &nbsp;Paste a link</button></div>
         <div class="panel" id="filePanel"><label class="dropzone" id="dropzone" for="fileInput"><input type="file" id="fileInput" accept=".pdf,.docx,.xlsx,.xls,.doc"><span class="upload-icon">↥</span><span class="drop-title" id="fileTitle">Drop a file here, or <b>browse</b></span><span class="drop-sub" id="fileSub">PDF, Word, or Excel · up to 30 MB</span><span id="fileName" class="file-name"></span></label><div class="file-note"><span>◈</span> Processed locally. Nothing is stored or shared.</div></div>
         <div class="panel hidden" id="urlPanel"><label class="url-label" for="urlInput">WEB ADDRESS</label><div class="url-field"><span>↗</span><input id="urlInput" type="url" placeholder="https://example.com/article" autocomplete="url"></div><div class="file-note"><span>◈</span> Page text and links are captured. Images and media are skipped.</div></div>
@@ -20,10 +22,10 @@
         <div class="engine-row"><div><b>Summarize with</b><small id="engineHint">Works offline. No setup required.</small></div><select id="engineSelect" aria-label="Summarizer"><option value="offline">Built-in · Offline</option><option value="ollama">Local AI · Ollama</option></select></div><div class="model-row hidden" id="modelRow"><label for="modelInput">MODEL</label><input id="modelInput" value="gemma3:1b" placeholder="gemma3:1b or qwen3:1.5b"><span id="ollamaStatus">Checking…</span></div>
         <button class="submit-button" id="submitButton"><span>Make my summary</span><span class="button-arrow">↗</span></button><div class="error-message" id="errorMessage" role="alert"></div>
       </div>
-      <div class="result-card hidden" id="resultCard"><div class="result-top"><div><div class="step-label"><span class="step-number">03</span> YOUR SUMMARY</div><h2 id="resultTitle">Summary</h2><div class="result-meta" id="resultMeta"></div></div><div class="export-wrap"><button class="export-button" id="exportButton">↓ &nbsp; Export <span>⌄</span></button><div class="export-menu hidden" id="exportMenu"><button data-export="txt">Plain text (.txt)</button><button data-export="docx">Word document (.docx)</button><button data-export="pdf">PDF document (.pdf)</button></div></div></div><div class="summary-body" id="summaryBody"></div><details class="source-details"><summary>View extracted content <span id="sourceCount"></span></summary><pre id="sourceText"></pre></details><div id="linksBlock" class="links-block hidden"><b>Links found on this page</b><div id="linksList"></div></div></div>
+      <div class="result-card hidden" id="resultCard"><div class="result-top"><div><div class="step-label"><span class="step-number">03</span> YOUR SUMMARY</div><h2 id="resultTitle">Summary</h2><div class="result-meta" id="resultMeta"></div></div><div class="export-wrap"><button class="export-button" id="exportButton">↓ &nbsp; Export <span>⌄</span></button><div class="export-menu hidden" id="exportMenu"><button data-export="txt">Plain text (.txt)</button><button data-export="docx">Word document (.docx)</button><button data-export="pdf">PDF document (.pdf)</button></div></div></div><div class="summary-body" id="summaryBody"></div><details class="source-details" id="sourceDetails"><summary>View extracted content <span id="sourceCount"></span></summary><pre id="sourceText"></pre></details><div id="linksBlock" class="links-block hidden"><b>Links found on this page</b><div id="linksList"></div></div></div>
     </section>
   </main>
   <footer><span>MADE FOR THE CURIOUS</span><span class="footer-right">Your documents are processed in your browser session. <span>✳</span></span></footer>
-  <script src="app.js"></script>
+  <script src="app.js?v=3" defer></script>
 </body>
 </html>
